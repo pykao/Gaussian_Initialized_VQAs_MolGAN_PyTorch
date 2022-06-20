@@ -11,6 +11,7 @@ from frechetdist import frdist
 
 import pennylane as qml
 import random
+import math
 
 import torch
 import torch.nn.functional as F
@@ -112,7 +113,7 @@ class Solver(object):
                 self.pretrained_qc_weights = pd.read_csv('results/quantum_circuit/molgan_red_weights.csv', header=None).iloc[-1, 1:].values
                 self.gen_weights = torch.tensor(list(self.pretrained_qc_weights), requires_grad=True)
             else:
-                self.gen_weights = torch.tensor(list(np.random.normal(0, 0.3, config.layer*config.qubits*3+config.qubits*2)), requires_grad=True)
+                self.gen_weights = torch.tensor(list(np.random.normal(0, math.sqrt(1.0/config.layer), config.layer*config.qubits*3+config.qubits*2)), requires_grad=True)
                 #self.gen_weights = torch.tensor(list(np.random.rand(config.layer*(config.qubits*2-1))*2*np.pi-np.pi), requires_grad=True)
 
             # learning rate of quantum circuit
